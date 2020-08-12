@@ -1,5 +1,7 @@
 # minio-mc-nsg
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/minio-mc-nsg)
+
 MinIO MC is a Object Storage client that implements the AWS S3 API.
 There is currently no packages published of "mc", so I made this package.
 
