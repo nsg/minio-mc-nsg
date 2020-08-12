@@ -1,0 +1,40 @@
+---
+
+name: minio-mc-nsg
+base: core20
+adopt-info: detect-version
+summary: MinIO MC is an Object Storage (S3) client.
+description: |
+  MinIO MC is a Object Storage client that implements the AWS S3 API.
+  There is currently no packages published of "mc", so I made this package.
+
+  There are a few limitations due snapd's sandbox:
+    * You can only upload/download files from your home directory.
+    * You can't read from hidden files (starting with a dot)
+    * On Ubuntu Core you need to manually connect the home interface
+
+grade: stable
+confinement: strict
+
+apps:
+  minio-mc-nsg:
+    adapter: full
+    command: bin/mc
+    plugs:
+      - network
+      - home
+
+parts:
+  detect-version:
+    plugin: nil
+    override-build: |
+      apt -y install jq curl
+      VERSION=$(curl --silent "https://api.github.com/repos/minio/mc/releases/latest" | jq -r .tag_name)
+      snapcraftctl set-version $VERSION
+  
+  mc:
+    plugin: go
+    source: https://github.com/minio/mc.git
+    source-tag: $SNAPCRAFT_PROJECT_VERSION
+    build-packages:
+      - libc6-dev
